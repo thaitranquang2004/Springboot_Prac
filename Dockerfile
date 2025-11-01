@@ -1,12 +1,12 @@
-# Build stage: Maven compile với Java 25
-FROM maven:3.9.9-eclipse-temurin-25 AS build
+# Build stage: Maven compile với Java 25 (tag tồn tại)
+FROM maven:3.9.11-eclipse-temurin-25-alpine AS build
 WORKDIR /app
 COPY pom.xml .
-RUN mvn dependency:go-offline  # Cache dependencies
+RUN mvn dependency:go-offline  # Cache dependencies để build nhanh
 COPY src src
 RUN mvn clean package -DskipTests
 
-# Runtime stage: Chạy JAR với Java 25
+# Runtime stage: Chạy JAR với Java 25 (alpine nhỏ gọn)
 FROM eclipse-temurin:25-jdk-alpine
 VOLUME /tmp
 ARG JAR_FILE=*.jar  # Tự động lấy JAR từ target/
